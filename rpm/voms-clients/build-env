@@ -1,0 +1,7 @@
+BUILD_NAME=voms-clients
+BUILD_REPO=git://github.com/italiangrid/voms-clients
+BUILD_TAG=develop
+PKG_REPO=git://github.com/italiangrid/pkg.voms.git
+PKG_TAG=master
+PKG_SPEC_FILE=voms-clients/rpm/voms-clients/voms-clients.spec
+TARBALL_VERSION=3.0.7
