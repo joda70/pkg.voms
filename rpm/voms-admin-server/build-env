@@ -4,4 +4,4 @@ BUILD_TAG=develop
 PKG_REPO=git://github.com/italiangrid/pkg.voms.git
 PKG_TAG=master
 PKG_SPEC_FILE=voms-admin-server/rpm/voms-admin-server/voms-admin-server.spec
-TARBALL_VERSION=3.5.2.rc0
+TARBALL_VERSION=3.5.2
