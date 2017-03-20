@@ -4,7 +4,7 @@
 %global random_num %(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 8)
 
 %global base_version 3.5.2
-%global base_release 0
+%global base_release 1
 
 %if 0%{?rhel} == 5
 %define jdk_version 1.7.0
@@ -150,8 +150,9 @@ fi
 %attr(-,voms,voms) %dir %{_localstatedir}/log/voms-admin
 
 %changelog
-* Mon Mar 13 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.5.2-0
+* Mon Mar 20 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.5.2-1
 - Packaging for version 3.5.2
+
 * Tue Mar 20 2016 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.5.1-1
 - Packaging for version 3.5.1
 
