@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 
-PLATFORM=${PLATFORM:-rawhide}
+PLATFORM=${PLATFORM:-centos6}
 COMPONENTS=${COMPONENTS:-"voms voms-admin-server voms-admin-client voms-api-java voms-clients voms-mysql-plugin"}
 
 pkg_base_image_name="italiangrid/pkg.base:${PLATFORM}"
