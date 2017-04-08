@@ -7,8 +7,8 @@
 %global pydotver %(%{__python} -c "import sys; print sys.version[:3]")
 
 Name: voms-admin-client
-Version: 2.0.19
-Release: 1%{?dist}
+Version: 2.0.20
+Release: 0%{?dist}
 Summary: The VOMS administration service command line tool
 
 Group: Applications/Internet
@@ -57,7 +57,7 @@ service administrative operations.
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr
-make install prefix=$RPM_BUILD_ROOT/usr
+python setup.py install --prefix=$RPM_BUILD_ROOT/usr
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -74,7 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_docdir}/%{name}/
 %doc %{_docdir}/%{name}/CHANGELOG
 %doc %{_docdir}/%{name}/LICENSE
-%doc %{_docdir}/%{name}/README
+%doc %{_docdir}/%{name}/README.md
 
 # Egg packaging
 %if (%{pyver} > 24)
@@ -82,6 +82,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Apr 8 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 2.0.20-0
+- 2.0.20 packaging
+
 * Fri Jun 21 2013 Daniele Andreotti <daniele.andreotti at cnaf.infn.it> - 2.0.19-1
 - Fix for https://issues.infn.it/jira/browse/VOMS-144
 

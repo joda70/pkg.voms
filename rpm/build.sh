@@ -1,8 +1,15 @@
 #!/bin/bash
 set -ex
 
+ALL_COMPONENTS="voms voms-admin-server voms-admin-client voms-api-java voms-clients voms-mysql-plugin"
+
 PLATFORM=${PLATFORM:-centos6}
-COMPONENTS=${COMPONENTS:-"voms voms-admin-server voms-admin-client voms-api-java voms-clients voms-mysql-plugin"}
+
+COMPONENTS=${COMPONENTS:-${ALL_COMPONENTS}}
+
+set -a 
+source build.env
+set +a
 
 pkg_base_image_name="italiangrid/pkg.base:${PLATFORM}"
 
@@ -20,53 +27,30 @@ fi
 
 # Run packaging
 for c in ${COMPONENTS}; do
-  build_env=""
+  build_env_file="$c/build-env"
 
-  while read -r line
-  do
-    [ -z "${line}" ] && continue
-    build_env="${build_env} -e ${line}"
-  done < "$c/build-env"
+  comp_name=$(echo ${c} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
 
-  if [ -n "${PKG_BUILD_NUMBER}" ]; then
-    build_env="${build_env} -e BUILD_NUMBER=${PKG_BUILD_NUMBER}"
-  fi
+  var_names="BUILD_REPO BUILD_NUMBER PKG_PACKAGES_DIR PKG_STAGE_DIR PKG_TAG PKG_REPO PKG_STAGE_RPMS"
 
-  if [ -n "${PKG_PACKAGES_DIR}" ]; then
-    build_env="${build_env} -e PKG_PACKAGES_DIR=${PKG_PACKAGES_DIR}"
-  fi
+  for v in ${var_names}; do
+    c_var_name="${v}_${comp_name}"
 
-  if [ -n "${PKG_STAGE_DIR}" ]; then
-    build_env="${build_env} -e PKG_STAGE_DIR=${PKG_STAGE_DIR}"
-  fi
-
-  if [ -n "${BUILD_REPO}" ]; then
-    build_env="${build_env} -e BUILD_REPO=${BUILD_REPO}"
-  fi
-
-  if [ -n "${PKG_TAG}" ]; then
-    build_env="${build_env} -e PKG_TAG=${PKG_TAG}"
-  fi
-
-  if [ -n "${PKG_REPO}" ]; then
-    build_env="${build_env} -e PKG_REPO=${PKG_REPO}"
-  fi
+    if [ -n "${!c_var_name}" ]; then
+      build_env="${build_env} -e ${v}=${!c_var_name}"
+    elif [ -n "${!v}" ]; then
+        build_env="${build_env} -e ${v}=${!v}"
+    fi
+  done
 
   if [ -n "${DATA_CONTAINER_NAME}" ]; then
     volumes_conf="${volumes_conf} --volumes-from ${DATA_CONTAINER_NAME}"
   fi
 
-  if [ -n "${STAGE_ALL}" ]; then
-      build_env="${build_env} -e PKG_STAGE_RPMS=1"
-  fi
-
-  if [ -n "${PKG_TAG}" ]; then
-    build_env="${build_env} -e PKG_TAG=${PKG_TAG}"
-  fi
-
   docker run -i --volumes-from ${mvn_repo_name} \
     ${volumes_conf} \
-    ${build_env} \
     ${DOCKER_ARGS} \
+    --env-file ${build_env_file} \
+    ${build_env} \
     ${pkg_base_image_name}
 done
