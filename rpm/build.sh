@@ -2,13 +2,11 @@
 set -ex
 
 ALL_COMPONENTS="voms voms-admin-server voms-admin-client voms-api-java voms-clients voms-mysql-plugin"
-
 PLATFORM=${PLATFORM:-centos6}
-
 COMPONENTS=${COMPONENTS:-${ALL_COMPONENTS}}
 
 set -a 
-source build.env
+source ./build.env
 set +a
 
 pkg_base_image_name="italiangrid/pkg.base:${PLATFORM}"
@@ -31,7 +29,7 @@ for c in ${COMPONENTS}; do
 
   comp_name=$(echo ${c} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
 
-  var_names="BUILD_REPO BUILD_NUMBER PKG_PACKAGES_DIR PKG_STAGE_DIR PKG_TAG PKG_REPO PKG_STAGE_RPMS"
+  var_names="BUILD_REPO PKG_PACKAGES_DIR PKG_STAGE_DIR PKG_TAG PKG_REPO PKG_STAGE_RPMS"
 
   for v in ${var_names}; do
     c_var_name="${v}_${comp_name}"
@@ -43,10 +41,15 @@ for c in ${COMPONENTS}; do
     fi
   done
 
+  if [ -n "${INCLUDE_BUILD_NUMBER}" ]; then
+    build_env="${build_env} -e BUILD_NUMBER=${BUILD_NUMBER:-test}"
+  fi
+
   if [ -n "${DATA_CONTAINER_NAME}" ]; then
     volumes_conf="${volumes_conf} --volumes-from ${DATA_CONTAINER_NAME}"
   fi
 
+  docker pull ${pkg_base_image_name}
   docker run -i --volumes-from ${mvn_repo_name} \
     ${volumes_conf} \
     ${DOCKER_ARGS} \
