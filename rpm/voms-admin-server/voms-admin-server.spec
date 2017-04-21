@@ -3,7 +3,7 @@
 
 %global random_num %(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 8)
 
-%global base_version 3.6.1
+%global base_version 3.3.3.2
 %global base_release 0
 
 %if 0%{?rhel} == 5
@@ -150,30 +150,8 @@ fi
 %attr(-,voms,voms) %dir %{_localstatedir}/log/voms-admin
 
 %changelog
-* Sat Apr 8 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.6.1-0
-- Packaging for version 3.6.1
-
-* Wed Mar 22 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.6.0-1
-- Packaging for version 3.6.0
-
-* Mon Mar 20 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.5.2-1
-- Packaging for version 3.5.2
-
-* Tue Mar 20 2016 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.5.1-1
-- Packaging for version 3.5.1
-
-* Thu Feb 25 2016 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.5.0-1
-- Packaging for version 3.5.0
-
-* Thu Feb 25 2016 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.4.2-1
-- Packaging for version 3.4.2
-
-* Wed Oct 28 2015 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.4.1.0
-- Added dependency on curl and bumped version to 3.5.0
-
-* Tue Feb 10 2015 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.4.0-1
-- Packaged VOMS Admin Server 3.4.0
-- Updated Java dependency
+* Fri Apr 21 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.3.3.2-0
+- Packaging for version 3.3.3.2
 
 * Tue Feb 10 2015 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.3.3-1
 - Bumped version to 3.3.3.
