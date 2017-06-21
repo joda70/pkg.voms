@@ -3,7 +3,7 @@
 
 %global random_num %(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 8)
 
-%global base_version 3.6.1
+%global base_version 3.7.0
 %global base_release 0
 
 %if 0%{?rhel} == 5
@@ -150,6 +150,10 @@ fi
 %attr(-,voms,voms) %dir %{_localstatedir}/log/voms-admin
 
 %changelog
+
+* Wed Jun 21 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.7.0-0
+- Packaging for version 3.7.0
+
 * Sat Apr 8 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.6.1-0
 - Packaging for version 3.6.1
 
