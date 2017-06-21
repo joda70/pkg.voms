@@ -9,7 +9,7 @@ pipeline {
   stages{
     stage('package') {
       environment {
-        DATA_CONTAINER_NAME = 'stage-area-pkg.voms-${BUILD_NUMBER}'
+        DATA_CONTAINER_NAME = 'stage-area-pkg.voms-${env.BUILD_NUMBER}'
       }
       steps {
         git(url: 'https://github.com/italiangrid/pkg.voms.git', branch: env.BRANCH_NAME)
