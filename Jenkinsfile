@@ -13,6 +13,7 @@ pipeline {
   stages{
     stage('package') {
       steps {
+        deleteDir()
         git(url: 'https://github.com/italiangrid/pkg.voms.git', branch: env.BRANCH_NAME)
         sh 'docker create -v /stage-area --name ${DATA_CONTAINER_NAME} italiangrid/pkg.base:centos6'
         sh '''
