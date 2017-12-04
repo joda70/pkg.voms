@@ -1,5 +1,4 @@
-%global pom_version 3.0.7
-%global base_version 3.0.6
+%global pom_version 3.1.0-SNAPSHOT
 %global base_release 1
 
 %if 0%{?rhel} == 5
@@ -29,7 +28,7 @@
 %global _varlib /var/lib
 
 Name: voms-clients3
-Version: 3.0.7
+Version: 3.1.0
 Release: %{release_version}%{?dist}
 Summary: The Virtual Organisation Membership Service command line clients
 
@@ -46,8 +45,8 @@ BuildRequires: jpackage-utils
 BuildRequires: java-%{jdk_version}-openjdk-devel
 
 Requires: java-%{jdk_version}-openjdk
-Requires: voms-api-java3 >= 3.0.3
-Requires: jakarta-commons-io
+# Requires: voms-api-java3 >= 3.0.3
+# Requires: jakarta-commons-io
 
 Requires: jpackage-utils
 
@@ -82,16 +81,12 @@ install -dm 755 $RPM_BUILD_ROOT%{_javadir}
 install -dm 755 $RPM_BUILD_ROOT%{_varlib}/%{name}/lib
 
 # Install all files but jar dependencies (these will be taken from the OS)
-tar -C $RPM_BUILD_ROOT/usr -xvzf target/%{orig_name}.tar.gz --strip 1 --exclude '*.jar'
+tar -C $RPM_BUILD_ROOT/usr -xvzf target/%{orig_name}.tar.gz --strip 1 # --exclude '*.jar'
 
-# But install the voms-clients jar as well
-tar -C $RPM_BUILD_ROOT/usr -xvzf target/%{orig_name}.tar.gz --strip 1 '%{orig_name}/share/java/%{orig_name}-%{pom_version}.jar'
+mv $RPM_BUILD_ROOT%{_javadir}/%{orig_name}/*.jar $RPM_BUILD_ROOT%{_varlib}/%{name}/lib
 
-# And the commons-cli, as the version on SL5 is buggy
-tar -C $RPM_BUILD_ROOT/%{_varlib}/%{name}/lib -xvzf  target/%{orig_name}.tar.gz --strip 3 --wildcards '%{orig_name}/share/java/commons-cli-*.jar'
-
-ln -s %{orig_name}-%{pom_version}.jar $RPM_BUILD_ROOT%{_javadir}/%{orig_name}.jar
-ln -s %{orig_name}-%{pom_version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
+ln -s %{_varlib}/%{name}/lib/%{orig_name}-%{pom_version}.jar $RPM_BUILD_ROOT%{_javadir}/%{orig_name}.jar
+ln -s %{_varlib}/%{name}/lib/%{orig_name}-%{pom_version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
 
 # Rename to voms-proxy-*3 to avoid clashes with old C clients
 mv $RPM_BUILD_ROOT/%{_bindir}/voms-proxy-init $RPM_BUILD_ROOT/%{_bindir}/voms-proxy-init3
@@ -128,7 +123,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/vomses.5.gz
 %{_mandir}/man5/vomsdir.5.gz
 
-%{_javadir}/%{orig_name}-%{pom_version}.jar
 %{_javadir}/%{name}.jar
 %{_javadir}/%{orig_name}.jar
 
@@ -160,12 +154,12 @@ fi
 
 %post
 
-jar_names="voms-clients bcprov-1.46 bcmail-1.46 canl voms-api-java3 commons-io"
+# jar_names="voms-clients bcprov-1.46 bcmail-1.46 canl voms-api-java3 commons-io"
 
-for jarname in ${jar_names}; do
-    [ -f %{_javadir}/$jarname.jar ] ||  ( echo "$jarname not found in %{_javadir}" && exit 1 )
-    ln -fs %{_javadir}/$jarname.jar %{_varlib}/%{name}/lib
-done
+#for jarname in ${jar_names}; do
+#    [ -f %{_javadir}/$jarname.jar ] ||  ( echo "$jarname not found in %{_javadir}" && exit 1 )
+#    ln -fs %{_javadir}/$jarname.jar %{_varlib}/%{name}/lib
+#done
 
 %{_sbindir}/update-alternatives --install %{_bindir}/voms-proxy-init \
    voms-proxy-init %{_bindir}/voms-proxy-init3 90 \
@@ -188,6 +182,9 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %changelog
+* Mon Dec 4 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.1.0-1
+- Packaging 3.1.0 version
+
 * Wed Sep 7 2016 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.0.7-1
 - Packaging 3.0.7 version
 
