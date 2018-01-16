@@ -7,6 +7,15 @@ DATA_CONTAINER_NAME="stage-area-pkg.voms-${TRAVIS_JOB_ID}"
 export PING_SLEEP=30s
 export BUILD_OUTPUT=$(pwd)/travis/travis-build.out
 
+upload_report() {
+  BUILD_REPORT_URL=${PKG_NEXUS_HOST}/repository/${PKG_NEXUS_REPONAME}/travis-build.out
+  curl --user "${PKG_NEXUS_USERNAME}:${PKG_NEXUS_PASSWORD}" --upload-file travis/travis-build.out \
+      ${PKG_NEXUS_HOST}/repository/${PKG_NEXUS_REPONAME}/travis-build.out
+
+  echo "Build report available at:"
+  echo ${BUILD_REPORT_URL}
+}
+
 dump_output() {
    echo Tailing the last 1000 lines of output:
    tail -1000 $BUILD_OUTPUT
@@ -14,6 +23,7 @@ dump_output() {
 
 error_handler() {
   echo ERROR: An error was encountered with the build.
+  upload_report
   dump_output
   exit 1
 }
@@ -35,9 +45,4 @@ popd
 echo "pkg.voms build completed succesfully!"
 kill ${PING_LOOP_PID}
 
-BUILD_REPORT_URL=${PKG_NEXUS_HOST}/repository/${PKG_NEXUS_REPONAME}/travis-build.out
-curl --user "${PKG_NEXUS_USERNAME}:${PKG_NEXUS_PASSWORD}" --upload-file travis/travis-build.out \
-    ${PKG_NEXUS_HOST}/repository/${PKG_NEXUS_REPONAME}/travis-build.out
-
-echo "Build report available at:"
-echo ${BUILD_REPORT_URL}
+upload_report
