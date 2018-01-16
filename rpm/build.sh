@@ -41,6 +41,18 @@ for c in ${COMPONENTS}; do
     fi
   done
 
+  if [ -n "${PKG_UPLOAD_RPMS}" ]; then
+    build_env="${build_env} -e PKG_UPLOAD_RPMS=1"
+
+    nexus_vars="PKG_NEXUS_HOST PKG_NEXUS_USERNAME PKG_NEXUS_PASSWORD PKG_NEXUS_REPONAME"
+
+    for nv in ${nexus_vars}; do
+      if [ -n "${!nv}" ]; then
+        build_env="${build_env} -e ${nv}=${!nv}"
+      fi
+    done
+  fi
+
   if [ -n "${INCLUDE_BUILD_NUMBER}" ]; then
     build_env="${build_env} -e BUILD_NUMBER=${BUILD_NUMBER:-test}"
   fi
@@ -49,7 +61,10 @@ for c in ${COMPONENTS}; do
     volumes_conf="${volumes_conf} --volumes-from ${DATA_CONTAINER_NAME}"
   fi
 
-  docker pull ${pkg_base_image_name}
+  if [ -z "${SKIP_IMAGE_PULL}" ]; then
+    docker pull ${pkg_base_image_name}
+  fi
+
   docker run -i --volumes-from ${mvn_repo_name} \
     ${volumes_conf} \
     ${DOCKER_ARGS} \
