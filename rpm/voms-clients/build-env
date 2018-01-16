@@ -5,3 +5,4 @@ PKG_REPO=git://github.com/italiangrid/pkg.voms.git
 PKG_TAG=release_dec_17
 PKG_SPEC_FILE=voms-clients/rpm/voms-clients/voms-clients.spec
 TARBALL_VERSION=3.1.0
+RPM_NAME=voms-clients3
