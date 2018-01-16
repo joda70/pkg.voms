@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -ex
 TRAVIS_REPO_SLUG=${TRAVIS_REPO_SLUG:-italiangrid/pkg.voms}
 TRAVIS_JOB_ID=${TRAVIS_JOB_ID:-0}
