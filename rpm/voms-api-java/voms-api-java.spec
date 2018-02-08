@@ -1,14 +1,8 @@
-%global pom_version 3.0.6
-%global base_version 3.0.6
-%global base_release 1
+%global pom_version 3.3.0-SNAPSHOT
+%global base_version 3.3.0
+%global base_release 0
 
-%if 0%{?rhel} == 5
-%define jdk_version 1.7.0
-%define bcmail_package bouncycastle146-mail
-%else
 %define jdk_version 1.8.0
-%define bcmail_package bouncycastle-mail
-%endif
 
 %if 0%{?rhel} >= 7 || 0%{?fedora} >= 21
 %define maven maven
@@ -42,8 +36,7 @@ BuildRequires:  jpackage-utils
 BuildRequires:  java-%{jdk_version}-openjdk-devel
 
 Requires:       jpackage-utils
-Requires:       canl-java >= 1.3
-Requires:       %{bcmail_package}
+Requires:       canl-java >= 2.5
 Requires:       java-%{jdk_version}-openjdk
 
 %description
@@ -99,6 +92,9 @@ rm -rf %{buildroot}
 %doc %{_javadocdir}/%{name}-%{pom_version}
 
 %changelog
+* Thu Jan 25 2018 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.3.0-0
+- Bumped packaging for 3.3.0 version
+
 * Tue Jun 9 2015 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.0.6-0
 - Bumped packaging for 3.0.6 version
 

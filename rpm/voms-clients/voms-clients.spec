@@ -1,5 +1,5 @@
-%global pom_version 3.1.0-SNAPSHOT
-%global base_release 1
+%global pom_version 3.3.0
+%global base_release 0
 
 %if 0%{?rhel} == 5
 %define jdk_version 1.7.0
@@ -28,7 +28,7 @@
 %global _varlib /var/lib
 
 Name: voms-clients3
-Version: 3.1.0
+Version: 3.3.0
 Release: %{release_version}%{?dist}
 Summary: The Virtual Organisation Membership Service command line clients
 
@@ -45,8 +45,6 @@ BuildRequires: jpackage-utils
 BuildRequires: java-%{jdk_version}-openjdk-devel
 
 Requires: java-%{jdk_version}-openjdk
-# Requires: voms-api-java3 >= 3.0.3
-# Requires: jakarta-commons-io
 
 Requires: jpackage-utils
 
@@ -80,8 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 install -dm 755 $RPM_BUILD_ROOT%{_javadir}
 install -dm 755 $RPM_BUILD_ROOT%{_varlib}/%{name}/lib
 
-# Install all files but jar dependencies (these will be taken from the OS)
-tar -C $RPM_BUILD_ROOT/usr -xvzf target/%{orig_name}.tar.gz --strip 1 # --exclude '*.jar'
+tar -C $RPM_BUILD_ROOT/usr -xvzf target/%{orig_name}.tar.gz --strip 1 
 
 mv $RPM_BUILD_ROOT%{_javadir}/%{orig_name}/*.jar $RPM_BUILD_ROOT%{_varlib}/%{name}/lib
 
@@ -182,8 +179,8 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %changelog
-* Mon Dec 4 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.1.0-1
-- Packaging 3.1.0 version
+* Mon Dec 4 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.3.0-0
+- Packaging 3.3.0 version
 
 * Wed Sep 7 2016 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.0.7-1
 - Packaging 3.0.7 version
