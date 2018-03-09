@@ -1,4 +1,4 @@
-%global pom_version 3.3.0
+%global pom_version 3.3.1-SNAPSHOT
 %global base_release 0
 
 %if 0%{?rhel} == 5
@@ -28,7 +28,7 @@
 %global _varlib /var/lib
 
 Name: voms-clients3
-Version: 3.3.0
+Version: 3.3.1
 Release: %{release_version}%{?dist}
 Summary: The Virtual Organisation Membership Service command line clients
 
@@ -179,6 +179,9 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %changelog
+* Fri Mar 9 2018 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.3.1-0
+- Packaging 3.3.1 version
+
 * Mon Dec 4 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 3.3.0-0
 - Packaging 3.3.0 version
 
