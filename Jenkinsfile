@@ -1,5 +1,13 @@
 pipeline {
-  agent { label 'docker' }
+
+  agent {
+      kubernetes {
+          label "pkg.voms-${env.JOB_BASE_NAME}-${env.BUILD_NUMBER}"
+          cloud 'Kube mwdevel'
+          defaultContainer 'jnlp'
+          inheritFrom 'ci-template'
+      }
+  }
 
   options {
     timeout(time: 1, unit: 'HOURS')
@@ -13,7 +21,7 @@ pipeline {
   stages{
     stage('package') {
       steps {
-        container('docker-runner') {
+        container('runner') {
           deleteDir()
           git(url: 'https://github.com/italiangrid/pkg.voms.git', branch: env.BRANCH_NAME)
           sh 'docker create -v /stage-area --name ${DATA_CONTAINER_NAME} italiangrid/pkg.base:centos6'
