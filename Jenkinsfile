@@ -1,12 +1,7 @@
 pipeline {
 
   agent {
-      kubernetes {
-          label "pkg.voms-${env.JOB_BASE_NAME}-${env.BUILD_NUMBER}"
-          cloud 'Kube mwdevel'
-          defaultContainer 'jnlp'
-          inheritFrom 'ci-template'
-      }
+      label "docker"
   }
 
   options {
