@@ -36,7 +36,7 @@ BuildRequires:  jpackage-utils
 BuildRequires:  java-%{jdk_version}-openjdk-devel
 
 Requires: java-%{jdk_version}-openjdk-devel
-Requires: python(abi) = 2.6
+# Requires: python(abi) = 2.6
 Requires: curl
 
 %description
