@@ -78,6 +78,12 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/voms-admin
 
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/voms-admin
 
+%if 0%{?rhel} == 7
+  rm -f $RPM_BUILD_ROOT%{_initrddir}/voms-admin
+%else
+  rm -f $RPM_BUILD_ROOT%{_exec_prefix}/lib/systemd/system/voms-admin.service
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -103,12 +109,16 @@ fi
 exit 0
 
 %post
-/sbin/chkconfig --add voms-admin
 
+%if 0%{?rhel} == 6
+/sbin/chkconfig --add voms-admin
+%else
+systemctl enable voms-admin.service
+%endif
+
+
+# When upgrading
 if [ $1 -gt 1 ]; then
-    if [ -e /etc/voms-admin/voms-siblings.xml ]; then
-        rm -f /etc/voms-admin/voms-siblings.xml
-    fi
     chown -R voms /etc/voms-admin
 
     if [ -e /var/tmp/voms-admin ]; then
@@ -117,22 +127,43 @@ if [ $1 -gt 1 ]; then
 fi
 
 %preun
+
+# When uninstalling 
 if [ $1 = 0 ]; then
+  %if 0%{?rhel} == 6
     /sbin/service voms-admin stop >/dev/null 2>&1 || :
     /sbin/chkconfig --del voms-admin
+  %else
+    systemctl stop voms-admin.service
+    systemctl disable voms-admin.service
+  %endif
 fi
+
 exit 0
 
 %postun
 if [ $1 -gt 1 ]; then
+  %if 0%{?rhel} == 6
     /sbin/service voms-admin restart 2>&1 || :
+  %else
+    systemctl restart voms-admin.service
+  %endif
 fi
 
 %files
 
 %defattr(-,root,root,-)
 
+%if 0%{?rhel} == 6
+
 %{_initrddir}/voms-admin
+
+%else
+
+%{_exec_prefix}/lib/systemd/system/voms-admin.service
+
+%endif
+
 
 %dir %{_sysconfdir}/voms-admin
 %config(noreplace) %{_sysconfdir}/sysconfig/voms-admin
