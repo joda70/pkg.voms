@@ -25,16 +25,27 @@ License: ASL 2.0
 URL: https://twiki.cnaf.infn.it/twiki/bin/view/VOMS
 Source: %{name}-%{version}.tar.gz
 
+BuildRequires: asciidoc
+
+%if 0%{?rhel} == 6
 BuildRequires: python-ZSI
 BuildRequires: python-devel
 BuildRequires: python-simplejson
-BuildRequires: asciidoc
 BuildRequires: PyXML
 
 Requires: python
 Requires: python-ZSI
 Requires: python-simplejson
 Requires: PyXML
+%endif
+
+
+%if 0%{?rhel} > 6
+BuildRequires: python2-zsi
+
+Requires: python2
+Requires: python2-zsi
+%endif
 
 BuildArch: noarch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)

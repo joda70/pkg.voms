@@ -1,5 +1,0 @@
-BUILD_NAME=python-ZSI
-BUILD_REPO=https://src.fedoraproject.org/rpms/python-ZSI.git
-BUILD_TAG=f30
-PKG_SPEC_FILE=python-ZSI/python-ZSI.spec
-PKG_SKIP_SOURCE_TARBALL_CREATION=y
