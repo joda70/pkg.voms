@@ -6,9 +6,18 @@
 %global pyver %(%{__python} -c "import sys; print sys.version[0]+sys.version[2]")
 %global pydotver %(%{__python} -c "import sys; print sys.version[:3]")
 
+%global base_version 2.0.20
+%global base_release 0
+
+%if %{?build_number:1}%{!?build_number:0}
+%define release_version 0.build.%{build_number}
+%else
+%define release_version %{base_release}
+%endif
+
 Name: voms-admin-client
-Version: 2.0.20
-Release: 0%{?dist}
+Version: %{base_version}
+Release: %{release_version}%{?dist}
 Summary: The VOMS administration service command line tool
 
 Group: Applications/Internet
