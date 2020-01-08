@@ -85,10 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_docdir}/%{name}/LICENSE
 %doc %{_docdir}/%{name}/README.md
 
-# Egg packaging
-%if (%{pyver} > 24)
 %{python_sitelib}/voms_admin_client-%{version}-py%{pydotver}.egg-info
-%endif
 
 %changelog
 * Sat Apr 8 2017 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 2.0.20-0
